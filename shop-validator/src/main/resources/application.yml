@@ -1,0 +1,18 @@
+spring:
+  kafka:
+    security:
+      protocol: "SSL"
+    bootstrap-servers: kafka:9093
+    ssl:
+      trust-store-location: /certs/truststore.jks
+      trust-store-password: password
+      key-store-location:  /certs/keystore.jks
+      key-store-password: password
+    consumer:
+      group-id: group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
