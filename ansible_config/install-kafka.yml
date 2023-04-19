@@ -36,7 +36,7 @@
 
   - name: Copy truststore and keystore keys
     ansible.builtin.copy:
-      src: ../kafka-test/certs/
+      src: ../certs/
       dest: /data/keys/
       owner: kafka
       group: kafka
