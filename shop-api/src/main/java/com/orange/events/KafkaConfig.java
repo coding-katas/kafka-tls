@@ -27,20 +27,19 @@ import lombok.extern.slf4j.Slf4j;
 @Configuration
 public class KafkaConfig {
     
-    @Value(value = "${kafka.bootstrapAddress:kafka:9093}")
+    @Value(value = "${kafka.bootstrapAddress:instance-1:9093}")
     private String bootstrapAddress;
 
     public ProducerFactory<String, ShopDTO> producerFactory() {
         Map<String, Object> props = new HashMap<>();
-        log.info("HELLLO ANIS: {}.", bootstrapAddress);        
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
 
         props.put("security.protocol", "SSL");
-        props.put("ssl.truststore.location", "/certs/truststore.jks");
+        props.put("ssl.truststore.location", "/data/certs/truststore.jks");
         props.put("ssl.truststore.password", "password");
-        props.put("ssl.keystore.location", "/certs/keystore.jks");
+        props.put("ssl.keystore.location", "/data/certs/keystore.jks");
         props.put("ssl.keystore.password", "password");
         props.put("ssl.key.password", "password");
 
@@ -59,9 +58,9 @@ public class KafkaConfig {
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
 
         props.put("security.protocol", "SSL");
-        props.put("ssl.truststore.location", "/certs/truststore.jks");
+        props.put("ssl.truststore.location", "/data/certs/truststore.jks");
         props.put("ssl.truststore.password", "password");
-        props.put("ssl.keystore.location", "/certs/keystore.jks");
+        props.put("ssl.keystore.location", "/data/certs/keystore.jks");
         props.put("ssl.keystore.password", "password");
         props.put("ssl.key.password", "password");
         

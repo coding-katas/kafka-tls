@@ -27,12 +27,12 @@ public class ReceiveKafkaMessage {
 				groupId = "group_report")
 		public void listenShopTopic(ShopDTO shopDTO) {
 			try {
-		    log.info("Compra recebida no tópico: {}.",
+		    log.info("Purchase received on topic: {}.",
 		    		shopDTO.getIdentifier());	    
 		    reportRepository
 		    	.incrementShopStatus(shopDTO.getStatus());
 			} catch (Exception e) {
-				log.error("Erro no processamento da mensagem", e);
+				log.error("Error processing message", e);
 			}
 		}
 

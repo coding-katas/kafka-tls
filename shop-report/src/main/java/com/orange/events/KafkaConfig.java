@@ -24,7 +24,7 @@ import com.orange.dto.ShopDTO;
 @Configuration
 public class KafkaConfig {
     
-    @Value(value = "${kafka.bootstrapAddress:kafka:9093}")
+    @Value(value = "${kafka.bootstrapAddress:instance-1:9093}")
     private String bootstrapAddress;
 
     public ProducerFactory<String, ShopDTO> producerFactory() {
@@ -35,9 +35,9 @@ public class KafkaConfig {
 
 
         props.put("security.protocol", "SSL");
-        props.put("ssl.truststore.location", "/certs/truststore.jks");
+        props.put("ssl.truststore.location", "/data/certs/truststore.jks");
         props.put("ssl.truststore.password", "password");
-        props.put("ssl.keystore.location", "/certs/keystore.jks");
+        props.put("ssl.keystore.location", "/data/certs/keystore.jks");
         props.put("ssl.keystore.password", "password");
         props.put("ssl.key.password", "password");
 
@@ -57,9 +57,9 @@ public class KafkaConfig {
 
 
         props.put("security.protocol", "SSL");
-        props.put("ssl.truststore.location", "/certs/truststore.jks");
+        props.put("ssl.truststore.location", "/data/certs/truststore.jks");
         props.put("ssl.truststore.password", "password");
-        props.put("ssl.keystore.location", "/certs/keystore.jks");
+        props.put("ssl.keystore.location", "/data/certs/keystore.jks");
         props.put("ssl.keystore.password", "password");
         props.put("ssl.key.password", "password");        
         

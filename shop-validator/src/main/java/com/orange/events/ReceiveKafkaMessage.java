@@ -49,7 +49,7 @@ public class ReceiveKafkaMessage {
 	    
 	}
 
-	// valida se a compra possui algum erro
+	// validate shop
 	private boolean isValidShop(ShopItemDTO item, Product product) {
 		log.info("validity product vs item: {} --> {}.", product.getAmount(), item.getAmount());
 		return product != null &&

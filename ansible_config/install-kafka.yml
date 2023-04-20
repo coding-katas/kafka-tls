@@ -9,12 +9,17 @@
 
   tasks:
 
+
+  - name: Install Java 11 OpenJDK Development Kit
+    yum:
+      name: java-11-openjdk-devel
+      state: present
   - name: Create kafka user and data folders
     shell: |
       useradd kafka
       mkdir -p /data/kafka
       mkdir -p /data/zookeeper
-      mkdir -p /data/keys
+      mkdir -p /data/certs
       echo {{inventory_hostname}} | tail -c 2 > /data/zookeeper/myid
       chown -R kafka:kafka /data/kafka*
       chown -R kafka:kafka /data/zookeeper*
@@ -37,7 +42,7 @@
   - name: Copy truststore and keystore keys
     ansible.builtin.copy:
       src: ../certs/
-      dest: /data/keys/
+      dest: /data/certs/
       owner: kafka
       group: kafka
 
@@ -81,3 +86,4 @@
       systemctl start kafka
       systemctl enable zookeeper.service
       systemctl enable kafka.service
+      systemctl restart kafka

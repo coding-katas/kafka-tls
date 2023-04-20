@@ -11,7 +11,7 @@ services:
   kafka:
 
     image: confluentinc/cp-kafka:6.2.0
-    container_name: kafka
+    container_name: instance-1
     depends_on:
       - zookeeper
     ports:
@@ -20,7 +20,7 @@ services:
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,SSL://kafka:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://instance-1:9092,SSL://instance-1:9093
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1      
@@ -40,7 +40,7 @@ services:
     ports:
       - 8080:8080
     volumes:
-      - ../certs/:/certs
+      - ../certs/:/data/certs
     depends_on:
       - kafka
   shop-validator:
@@ -49,7 +49,7 @@ services:
     ports:
       - 8081:8081
     volumes:
-      - ../certs/:/certs
+      - ../certs/:/data/certs
     depends_on:
       - kafka
   shop-report:
@@ -58,6 +58,6 @@ services:
     ports:
       - 8082:8082
     volumes:
-      - ../certs/:/certs
+      - ../certs/:/data/certs
     depends_on:
       - kafka
