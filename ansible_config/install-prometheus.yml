@@ -1,0 +1,99 @@
+---
+- name: prometheus playbook install
+  hosts: prometheus-nodes
+  remote_user: root
+  vars:
+    package_name: prometheus
+    package_version: 2.43.0
+
+
+  tasks:
+
+  - name: Downloading prometheus software
+    unarchive:
+      src: "https://github.com/prometheus/prometheus/releases/download/v2.43.0/prometheus-2.43.0.linux-amd64.tar.gz"
+      dest: /opt
+      remote_src: yes
+
+
+  - name: Downloading node exporter software
+    unarchive:
+      src: "https://github.com/prometheus/node_exporter/releases/download/v1.5.0/node_exporter-1.5.0.linux-amd64.tar.gz"
+      dest: /opt
+      remote_src: yes
+
+  - name: Downloading grafana software
+    unarchive:
+      src: "https://dl.grafana.com/oss/release/grafana-9.4.7.linux-amd64.tar.gz"
+      dest: /opt
+      remote_src: yes
+
+  - name: Create symbolic links to prometheus and node_exporter
+    file:
+      src: "{{ item.src }}"
+      dest: "{{ item.dest }}"
+      state: link
+    with_items:
+      - src: /opt/prometheus-2.43.0.linux-amd64
+        dest: /opt/prometheus
+      - src: /opt/node_exporter-1.5.0.linux-amd64
+        dest: /opt/node_exporter
+      - src: /opt/grafana-9.4.7
+        dest: /opt/grafana
+
+  - name: Copy Prometheus configuration file
+    template:
+      src: prometheus.yml
+      dest: /opt/prometheus/prometheus.yml
+
+  - name: Create prometheus system service
+    ansible.builtin.template:
+      src: prometheus.service
+      dest: /etc/systemd/system/prometheus.service
+      owner: root
+      group: root
+
+  - name: Create node_exporter system service
+    ansible.builtin.template:
+      src: node_exporter.service
+      dest: /etc/systemd/system/node_exporter.service
+      owner: root
+      group: root
+
+  - name: Create grafana system service
+    ansible.builtin.template:
+      src: grafana.service
+      dest: /etc/systemd/system/grafana.service
+      owner: root
+      group: root
+
+  - name: start services prometheus and grafana
+    shell: |
+      systemctl daemon-reload
+      systemctl start prometheus
+      systemctl start node_exporter
+      systemctl start grafana
+      systemctl enable prometheus.service
+      systemctl enable node_exporter.service
+      systemctl enable grafana
+      systemctl restart prometheus
+      systemctl restart node_exporter
+      systemctl restart grafana
+#    environment:
+#      EXTRA_ARGS: "-Dcom.sun.management.jmxremote \
+#                    -Dcom.sun.management.jmxremote.authenticate=false \
+#                    -Dcom.sun.management.jmxremote.ssl=false \
+#                    -Djava.rmi.server.hostname=localhost \
+#                    -Djava.net.preferIPv4Stack=true \
+#                    -javaagent:/home/ansible/jmx_exporter/jmx_prometheus_javaagent/target/jmx_prometheus_javaagent-0.18.1-SNAPSHOT.jar=7070:/home/ansible/jmx_exporter/example_configs/kafka-2_0_0.yml"
+  - name: Check prometheus status
+    uri:
+      url: http://localhost:9090
+      method: GET
+      status_code: 200
+    register: result
+
+  - debug:
+      var: result
+    failed_when: result is failed
+

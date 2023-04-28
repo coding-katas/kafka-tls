@@ -8,6 +8,7 @@ Type=simple
 
 User=kafka
 Group=kafka
+Environment="KAFKA_OPTS=-javaagent:/opt/jmx_prometheus_javaagent-0.17.2.jar=7070:/opt/kafka-2_0_0.yml"
 
 ExecStart=/opt/kafka/bin/kafka-server-start.sh /opt/kafka/config/server.properties
 ExecStop=/opt/kafka/bin/kafka-server-stop.sh

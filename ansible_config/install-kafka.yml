@@ -31,6 +31,20 @@
       owner: kafka
       group: kafka
 
+  - name: Copy jmx jar to /opt
+    ansible.builtin.copy:
+      src:  jmx_prometheus_javaagent-0.17.2.jar
+      dest: /opt
+      owner: kafka
+      group: kafka
+
+  - name: Copy jmx yml to /opt
+    ansible.builtin.copy:
+      src: kafka-2_0_0.yml
+      dest: /opt
+      owner: kafka
+      group: kafka
+
   - name: Extract binary
     ansible.builtin.unarchive:
       src: /opt/kafka_2.12-3.4.0.tgz
@@ -87,3 +101,10 @@
       systemctl enable zookeeper.service
       systemctl enable kafka.service
       systemctl restart kafka
+#    environment:
+#      EXTRA_ARGS: "-Dcom.sun.management.jmxremote \
+#                    -Dcom.sun.management.jmxremote.authenticate=false \
+#                    -Dcom.sun.management.jmxremote.ssl=false \
+#                    -Djava.rmi.server.hostname=localhost \
+#                    -Djava.net.preferIPv4Stack=true \
+#                    -javaagent:/home/ansible/jmx_exporter/jmx_prometheus_javaagent/target/jmx_prometheus_javaagent-0.18.1-SNAPSHOT.jar=7070:/home/ansible/jmx_exporter/example_configs/kafka-2_0_0.yml"

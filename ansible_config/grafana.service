@@ -1,0 +1,14 @@
+[Unit]
+Description=Grafana instance
+After=network.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+WorkingDirectory=/opt/grafana/
+ExecStart=/opt/grafana/bin/grafana-server
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
