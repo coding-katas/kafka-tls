@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -33,6 +34,7 @@ public class ShopController {
     public ShopDTO saveShop(@RequestBody ShopDTO shopDTO) {    	
     	shopDTO.setIdentifier(UUID.randomUUID().toString());
     	shopDTO.setDateShop(LocalDate.now());
+    	shopDTO.setTimeShop(Instant.now());
     	shopDTO.setStatus("PENDING");
     	
     	Shop shop = Shop.convert(shopDTO);

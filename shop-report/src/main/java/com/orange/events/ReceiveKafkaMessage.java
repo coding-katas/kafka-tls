@@ -27,8 +27,8 @@ public class ReceiveKafkaMessage {
 				groupId = "group_report")
 		public void listenShopTopic(ShopDTO shopDTO) {
 			try {
-		    log.info("Purchase received on topic: {}.",
-		    		shopDTO.getIdentifier());	    
+		    log.info("Purchase received on topic with ID: {} for buyer: {} with time {}.",
+		    		shopDTO.getIdentifier(), shopDTO.getBuyerIdentifier(), shopDTO.getTimeShop());	    
 		    reportRepository
 		    	.incrementShopStatus(shopDTO.getStatus());
 			} catch (Exception e) {

@@ -60,13 +60,13 @@ public class ReceiveKafkaMessage {
 	private void shopError(ShopDTO shopDTO) {
 		log.info("Error in the purchase process {}.", shopDTO.getIdentifier());
 		shopDTO.setStatus("ERROR");
-		kafkaTemplate.send(SHOP_TOPIC_EVENT_NAME, shopDTO);
+	//	kafkaTemplate.send(SHOP_TOPIC_EVENT_NAME, shopDTO);
 	}
 
 	private void shopSuccess(ShopDTO shopDTO) {
 		log.info("Purchase {} succefully done.", shopDTO.getIdentifier());
 		shopDTO.setStatus("SUCCESS");
-		kafkaTemplate.send(SHOP_TOPIC_EVENT_NAME, shopDTO);
+//		kafkaTemplate.send(SHOP_TOPIC_EVENT_NAME, shopDTO);
 	}
 
 }

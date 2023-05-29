@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,6 +16,7 @@ import com.orange.model.Shop;
 public class ShopDTO {
     private String identifier;
     private LocalDate dateShop;
+    private Instant timeShop;
     private String status;
     private String buyerIdentifier;
     private List<ShopItemDTO> items = new  ArrayList<>();
@@ -23,6 +25,7 @@ public class ShopDTO {
     	ShopDTO shopDTO = new ShopDTO();
     	shopDTO.setIdentifier(shop.getIdentifier());
     	shopDTO.setDateShop(shop.getDateShop());
+    	shopDTO.setTimeShop(shop.getTimeShop());
     	shopDTO.setStatus(shop.getStatus());
     	shopDTO.setBuyerIdentifier(shop.getBuyerIdentifier());
     	shopDTO.setItems(shop.getItems().stream().map(i -> ShopItemDTO.convert(i)).collect(Collectors.toList()));

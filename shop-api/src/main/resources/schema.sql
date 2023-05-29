@@ -3,7 +3,8 @@ create table shop (
     buyer_identifier varchar(100) not null,
     identifier varchar not null,
     status varchar not null,
-    date_shop date
+    date_shop date,
+    time_shop datetime
 );
 
 create table shop_item (

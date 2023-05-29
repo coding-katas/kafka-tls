@@ -8,6 +8,7 @@ import javax.persistence.*;
 import com.orange.dto.ShopDTO;
 
 import java.time.LocalDate;
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,6 +28,9 @@ public class Shop {
     @Column(name = "date_shop")
     private LocalDate dateShop;
 
+    @Column(name = "time_shop")
+    private Instant timeShop;
+
     @Column(name = "buyer_identifier")
     private String buyerIdentifier;
     
@@ -38,6 +42,7 @@ public class Shop {
     	shop.setIdentifier(shopDTO.getIdentifier());
     	shop.setStatus(shopDTO.getStatus());
     	shop.setDateShop(shopDTO.getDateShop());
+    	shop.setTimeShop(shopDTO.getTimeShop());
     	shop.setItems(shopDTO
     			.getItems()
     			.stream()

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,9 @@ import java.util.List;
 public class ShopDTO {
     private String identifier;
     private LocalDate dateShop;
+    private Instant timeShop;
     private String status;
     private String buyerIdentifier;
-    private List<ShopItemDTO> items = new ArrayList<>();
+    private List<ShopItemDTO> items = new  ArrayList<>();
+    
 }
