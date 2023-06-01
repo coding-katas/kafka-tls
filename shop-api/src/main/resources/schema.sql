@@ -4,7 +4,7 @@ create table shop (
     identifier varchar not null,
     status varchar not null,
     date_shop date,
-    time_shop datetime
+    time_shop BIGINT
 );
 
 create table shop_item (

@@ -13,5 +13,5 @@ public class ShopDTO {
     private String status;
     private String buyerIdentifier;
     private LocalDate dateShop;
-    private Instant timeShop;
+    private long timeShop;
 }

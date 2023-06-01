@@ -78,9 +78,9 @@ public class KafkaConfig {
     private static final String INPUT_TOPIC_NAME = "SHOP_TOPIC";
     private static final String OUTPUT_TOPIC_EVENT_NAME = "SHOP_TOPIC_EVENT";
 
-    private static final int COMMIT_MS = 700;
-    private static final int WINDOWS_MS = 200;
-    private static final int GRACE_MS = 100;
+    private static final int COMMIT_MS = 1500;
+    private static final int WINDOWS_MS = 1200;
+    private static final int GRACE_MS = 200;
 
     private Path stateDirectory;
     private static final String storeName = "eventId-store";
@@ -155,28 +155,19 @@ public class KafkaConfig {
     }
 
     @Bean
-    public KafkaStreams kafkaStreams() throws InterruptedException {
-
-        log.info("START KAFKA STREAMINIG");
-
+    public KafkaStreams kafkaStreams() throws IOException {
         final Properties streamsConfiguration = new Properties();
         streamsConfiguration.put(StreamsConfig.APPLICATION_ID_CONFIG, "deduplication-kafka");
         streamsConfiguration.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-
-        try {
-            this.stateDirectory = Files.createTempDirectory("kafka-streams");
-            streamsConfiguration.put(StreamsConfig.STATE_DIR_CONFIG, this.stateDirectory.toAbsolutePath()
-                .toString());
-        } catch (final IOException e) {
-            throw new UncheckedIOException("Cannot create temporary directory", e);
-        }        
-
-        final int windowTime = 700;
+        
 
         streamsConfiguration.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
         streamsConfiguration.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG,  new JsonSerde<>(ShopDTO.class).getClass());
-        streamsConfiguration.put("commit.interval.ms", COMMIT_MS);
-        streamsConfiguration.put(StreamsConfig.REQUEST_TIMEOUT_MS_CONFIG, "30000");        
+        streamsConfiguration.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+	streamsConfiguration.put(StreamsConfig.REQUEST_TIMEOUT_MS_CONFIG, "30000");        
+	streamsConfiguration.put(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG, COMMIT_MS);
+        
+	
         streamsConfiguration.put("security.protocol", securityProtocol);
         streamsConfiguration.put("ssl.truststore.location", trustStoreLocation);
         streamsConfiguration.put("ssl.truststore.password", trustStorePassword);
@@ -187,19 +178,6 @@ public class KafkaConfig {
         final Duration windowSize = Duration.ofMinutes(10);
 
         final StreamsBuilder builder = new StreamsBuilder();
-
-        final Duration retentionPeriod = windowSize;
-
-        final StoreBuilder<WindowStore<String, Long>> dedupStoreBuilder = Stores.windowStoreBuilder(
-                Stores.persistentWindowStore(storeName,
-                                             retentionPeriod,
-                                             windowSize,
-                                             false
-                ),
-                Serdes.String(),
-                Serdes.Long());
-
-        builder.addStateStore(dedupStoreBuilder);
 
 	KStream<String, ShopDTO> source = builder.stream(INPUT_TOPIC_NAME, Consumed.with(Serdes.String(), new JsonSerde<>(ShopDTO.class)));
  
@@ -213,14 +191,6 @@ public class KafkaConfig {
                         .withKeySerde(Serdes.String()));
         KStream<String, ShopDTO> outputStream = reducedTable.toStream().map((windowedId, value) -> new KeyValue<>(windowedId.toString(), value));
         outputStream.to(OUTPUT_TOPIC_EVENT_NAME, Produced.with(Serdes.String(), new JsonSerde<>(ShopDTO.class)));
-
-//                .suppress(Suppressed.untilWindowCloses(unbounded()));
-//                .mapValues(value -> {
-  //                  log.info("MAP key={}, value={}", value.getBuyerIdentifier(), value.toString());
-   //                 return value;
-    //            });
-
-
 
         final Topology topology = builder.build();
 

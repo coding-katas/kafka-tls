@@ -29,7 +29,7 @@ public class Shop {
     private LocalDate dateShop;
 
     @Column(name = "time_shop")
-    private Instant timeShop;
+    private long timeShop;
 
     @Column(name = "buyer_identifier")
     private String buyerIdentifier;

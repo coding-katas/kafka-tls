@@ -52,12 +52,12 @@ services:
       - ../certs/:/data/certs
     depends_on:
       - kafka
-  shop-report:
-    image: shop-report
-    container_name: shop-report
-    ports:
-      - 8082:8082
-    volumes:
-      - ../certs/:/data/certs
-    depends_on:
-      - kafka
+#  shop-report:
+#    image: shop-report
+#    container_name: shop-report
+#    ports:
+#      - 8082:8082
+#    volumes:
+#     - ../certs/:/data/certs
+#    depends_on:
+#      - kafka

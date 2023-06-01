@@ -58,7 +58,7 @@ public class ReceiveKafkaMessageTests {
 		Mockito
 		.when(productRepository.findByIdentifier("product-1"))
 		.thenReturn(product);
-	/*	
+/*		
 		receiveKafkaMessage.listenShopTopic(shopDTO);
 		
 		Mockito
@@ -67,7 +67,7 @@ public class ReceiveKafkaMessageTests {
 		
 		Assertions
 			.assertThat(shopDTO.getStatus()).isEqualTo("SUCCESS");
-	*/	
+*/		
 	}
 	
 	@Test
@@ -78,15 +78,15 @@ public class ReceiveKafkaMessageTests {
 		Mockito
 		.when(productRepository.findByIdentifier("product-1"))
 		.thenReturn(null);
-		
-/*		receiveKafkaMessage.listenShopTopic(shopDTO);
+/*		
+		receiveKafkaMessage.listenShopTopic(shopDTO);
 		
 		Mockito
 		.verify(kafkaTemplate, Mockito.times(1))
 		.send(SHOP_TOPIC_EVENT_NAME, shopDTO);
 		
 		Assertions
-			.assertThat(shopDTO.getStatus()).isEqualTo("ERROR");*/
-		
+			.assertThat(shopDTO.getStatus()).isEqualTo("ERROR");
+*/		
 	}
 }

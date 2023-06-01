@@ -13,7 +13,7 @@ import java.util.List;
 public class ShopDTO {
     private String identifier;
     private LocalDate dateShop;
-    private Instant timeShop;
+    private long timeShop;
     private String status;
     private String buyerIdentifier;
     private List<ShopItemDTO> items = new  ArrayList<>();
